@@ -16,7 +16,7 @@ COPY src src
 
 RUN ./mvnw -DskipTests clean package \
     && MODULES=$(jdeps --multi-release 25 --class-path 'target/lib/*' --ignore-missing-deps --list-deps target/spring-vue-timer-docker-test-1.0-SNAPSHOT.jar | grep '^\s\+' | awk '{print $1}' | awk -F'/' '{print $1}' | sort -u | tr '\n' ',' | sed 's/,$//') \
-    && jlink --compress=2 --strip-debug --no-header-files --no-man-pages --add-modules "${MODULES}" --output /app/jlink-runtime
+    && jlink --compress=zip-9 --strip-debug --no-header-files --no-man-pages --add-modules "${MODULES}" --output /app/jlink-runtime
 
 # Runtime stage
 FROM amazoncorretto:25.0.1-al2023-headless

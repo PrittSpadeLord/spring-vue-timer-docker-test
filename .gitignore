@@ -39,4 +39,4 @@ build/
 .DS_Storegt
 
 .idea/
-./tomcat.8080
+tomcat.8080/
