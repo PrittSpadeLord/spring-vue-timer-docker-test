@@ -15,7 +15,7 @@ RUN chmod +x mvnw
 COPY src src
 
 RUN ./mvnw -DskipTests clean package \
-    && MODULES=$(jdeps --multi-release 25 --class-path 'target/lib/*' --ignore-missing-deps --list-deps target/spring-vue-timer-docker-test-1.0-SNAPSHOT.jar | grep '^\s\+' | awk '{print $1}' | awk -F'/' '{print $1}' | sort -u | tr '\n' ',' | sed 's/,$//') \
+    && MODULES=$(jdeps --multi-release 25 -cp "target/lib/*" --ignore-missing-deps --print-module-deps target/spring-vue-timer-docker-test-1.0-SNAPSHOT.jar) \
     && jlink --compress=zip-9 --strip-debug --no-header-files --no-man-pages --add-modules "${MODULES}" --output /app/jlink-runtime
 
 # Runtime stage
@@ -26,7 +26,6 @@ COPY --from=builder /app/target/spring-vue-timer-docker-test-1.0-SNAPSHOT.jar /a
 COPY --from=builder /app/target/lib /app/lib
 COPY --from=builder /usr/lib64/libz.so.1 /usr/lib64/
 COPY --from=builder /usr/lib64/libstdc++.so.6 /usr/lib64/
-
 
 ENV JAVA_HOME=/usr/lib/jvm/jre-min
 
