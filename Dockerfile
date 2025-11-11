@@ -3,7 +3,7 @@ FROM amazoncorretto:25.0.1-al2023 AS builder
 
 WORKDIR /app
 
-RUN yum update -y && yum install tar gzip procps findutils binutils -y
+RUN yum update -y && yum install tar gzip binutils -y
 
 COPY pom.xml .
 COPY mvnw .
