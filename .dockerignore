@@ -1,17 +1,7 @@
-# -----------------------------------------------------------
 # Maven-Specific Exclusions (Build Artifacts)
-# -----------------------------------------------------------
-
-# Exclude the entire 'target' directory where Maven puts build output (classes, JARs, etc.)
-# It's usually better to let the multi-stage Docker build generate this *inside* the container,
-# or explicitly COPY the final artifact from a host build.
 target/
 **/target/
 out/
-
-# -----------------------------------------------------------
-# Version Control & OS Files
-# -----------------------------------------------------------
 
 # Version control history and configurations
 .git
@@ -24,10 +14,6 @@ out/
 
 # Windows thumbnail cache
 Thumbs.db
-
-# -----------------------------------------------------------
-# IDE and Local Configuration Files
-# -----------------------------------------------------------
 
 # IntelliJ IDEA files
 .idea/
@@ -45,3 +31,6 @@ Thumbs.db
 *.log
 *.tmp
 *.bak
+
+# Others
+tomcat.8080/
