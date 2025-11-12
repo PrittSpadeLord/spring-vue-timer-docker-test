@@ -19,10 +19,10 @@ RUN ./mvnw -DskipTests clean package \
     && jlink --compress=zip-9 --strip-debug --no-header-files --no-man-pages --add-modules "${MODULES}" --output /app/jlink-runtime
 
 # Fetch essential libraries
-FROM registry.access.redhat.com/ubi10/ubi:10.0 AS ubi-additional-libraries
+FROM registry.access.redhat.com/ubi9/ubi:latest AS ubi-additional-libraries
 
 # Setup the runtime
-FROM registry.access.redhat.com/ubi10/ubi-micro:10.0
+FROM registry.access.redhat.com/ubi9/ubi-micro:latest
 
 COPY --from=jre-builder /app/jlink-runtime /usr/lib/jvm/jre-min
 COPY --from=jre-builder /app/target/spring-vue-timer-docker-test-1.0-SNAPSHOT.jar /app/app.jar
