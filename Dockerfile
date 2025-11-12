@@ -35,4 +35,4 @@ ENV JAVA_HOME=/usr/lib/jvm/jre-min
 
 EXPOSE 8080
 
-ENTRYPOINT ["/usr/lib/jvm/jre-min/bin/java", "-cp", "/app/app.jar:/app/lib/*", "io.github.prittspadelord.SpringVueTimerDockerTestApplication"]
+ENTRYPOINT ["/usr/lib/jvm/jre-min/bin/java", "-jar", "/app/app.jar"]

@@ -15,6 +15,7 @@
         <logback.version>1.5.20</logback.version>
         <lombok.version>1.18.42</lombok.version>
         <maven.compiler.plugin.version>3.14.1</maven.compiler.plugin.version>
+        <maven.jar.plugin.version>3.4.2</maven.jar.plugin.version>
         <maven.dependency.plugin.version>3.9.0</maven.dependency.plugin.version>
         <spring.framework.version>6.2.12</spring.framework.version>
         <tomcat.version>11.0.13</tomcat.version>
@@ -90,6 +91,21 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>${maven.jar.plugin.version}</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>lib/</classpathPrefix>
+                            <mainClass>io.github.prittspadelord.SpringVueTimerDockerTestApplication</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
             </plugin>
         </plugins>
     </build>
