@@ -1,5 +1,5 @@
-# Build stage
-FROM amazoncorretto:25.0.1-al2023 AS builder
+# Generate minimal JRE
+FROM amazoncorretto:25.0.1-al2023 AS jre-builder
 
 WORKDIR /app
 
@@ -18,14 +18,18 @@ RUN ./mvnw -DskipTests clean package \
     && MODULES=$(jdeps --multi-release 25 -cp "target/lib/*" --ignore-missing-deps --print-module-deps target/spring-vue-timer-docker-test-1.0-SNAPSHOT.jar) \
     && jlink --compress=zip-9 --strip-debug --no-header-files --no-man-pages --add-modules "${MODULES}" --output /app/jlink-runtime
 
-# Runtime stage
-FROM registry.access.redhat.com/ubi10/ubi-micro:latest
+# Fetch essential libraries
+FROM registry.access.redhat.com/ubi10/ubi:10.0 AS ubi-additional-libraries
 
-COPY --from=builder /app/jlink-runtime /usr/lib/jvm/jre-min
-COPY --from=builder /app/target/spring-vue-timer-docker-test-1.0-SNAPSHOT.jar /app/app.jar
-COPY --from=builder /app/target/lib /app/lib
-COPY --from=builder /usr/lib64/libz.so.1 /usr/lib64/
-COPY --from=builder /usr/lib64/libstdc++.so.6 /usr/lib64/
+# Setup the runtime
+FROM registry.access.redhat.com/ubi10/ubi-micro:10.0
+
+COPY --from=jre-builder /app/jlink-runtime /usr/lib/jvm/jre-min
+COPY --from=jre-builder /app/target/spring-vue-timer-docker-test-1.0-SNAPSHOT.jar /app/app.jar
+COPY --from=jre-builder /app/target/lib /app/lib
+
+COPY --from=ubi-additional-libraries /usr/lib64/libz.so.1 /usr/lib64/
+COPY --from=ubi-additional-libraries /usr/lib64/libstdc++.so.6 /usr/lib64/
 
 ENV JAVA_HOME=/usr/lib/jvm/jre-min
 
