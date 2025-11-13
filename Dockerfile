@@ -3,16 +3,15 @@ FROM amazoncorretto:25.0.1-al2023 AS jre-builder
 
 WORKDIR /app
 
-RUN yum update -y && yum install tar gzip binutils -y
+RUN yum update -y && yum install tar gzip binutils -y && rm -rf /var/cache/yum
 
 COPY pom.xml .
 COPY mvnw .
 COPY mvnw.cmd .
 COPY .mvn .mvn
+COPY src src
 
 RUN chmod +x mvnw
-
-COPY src src
 
 RUN ./mvnw -DskipTests clean package \
     && MODULES=$(jdeps --multi-release 25 -cp "target/lib/*" --ignore-missing-deps --print-module-deps target/spring-vue-timer-docker-test-1.0-SNAPSHOT.jar) \

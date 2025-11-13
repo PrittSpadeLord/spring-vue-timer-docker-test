@@ -25,8 +25,8 @@ public class SpringVueTimerDockerTestApplication {
 
         Context tomcatContext = tomcat.addContext("", (new File(".")).getAbsolutePath());
         tomcatContext.addServletContainerInitializer(
-                new SpringServletContainerInitializer(),
-                Set.of(MyDispatcherServletInitializer.class)
+            new SpringServletContainerInitializer(),
+            Set.of(MyDispatcherServletInitializer.class)
         );
 
         try {
