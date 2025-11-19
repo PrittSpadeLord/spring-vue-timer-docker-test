@@ -13,7 +13,6 @@ import org.apache.tomcat.util.net.SSLHostConfigCertificate;
 import org.springframework.core.task.VirtualThreadTaskExecutor;
 import org.springframework.web.SpringServletContainerInitializer;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
 import java.util.Set;
@@ -48,7 +47,7 @@ public class SpringVueTimerDockerTestApplication {
 
             SSLHostConfigCertificate certificate = new SSLHostConfigCertificate(
                 sslHostConfig,
-                SSLHostConfigCertificate.Type.UNDEFINED
+                SSLHostConfigCertificate.Type.RSA
             );
 
             String relativeKeystorePath = (System.getProperty("user.dir").endsWith("/") ? "" : "/") + "certs/vuespringtimer-cert.p12";
@@ -65,7 +64,7 @@ public class SpringVueTimerDockerTestApplication {
 
             tomcat.setConnector(connector);
 
-            Context tomcatContext = tomcat.addContext("", (new File(".")).getAbsolutePath());
+            Context tomcatContext = tomcat.addContext("", System.getProperty("user.dir"));
             tomcatContext.addServletContainerInitializer(
                 new SpringServletContainerInitializer(),
                 Set.of(MyDispatcherServletInitializer.class)

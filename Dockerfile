@@ -9,10 +9,12 @@ COPY pom.xml .
 COPY mvnw .
 COPY mvnw.cmd .
 COPY .mvn .mvn
+
+RUN chmod +x mvnw && ./mvnw dependency:go-offline -B
+
 COPY src src
 
-RUN chmod +x mvnw \
-    && ./mvnw -DskipTests clean package \
+RUN ./mvnw -DskipTests clean package \
     && MODULES=$(jdeps --multi-release 25 -cp "target/lib/*" --ignore-missing-deps --print-module-deps target/spring-vue-timer-docker-test-1.0-SNAPSHOT.jar) \
     && jlink --compress=zip-9 --strip-debug --no-header-files --no-man-pages --add-modules "${MODULES}" --output /app/jlink-runtime
 
