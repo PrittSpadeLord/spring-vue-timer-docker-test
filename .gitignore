@@ -3,7 +3,7 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 .kotlin
-src/main/resources/vuespringtimer-cert.p12
+certs/
 src/main/resources/application.properties
 
 ### IntelliJ IDEA ###
