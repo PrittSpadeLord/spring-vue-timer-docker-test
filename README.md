@@ -7,4 +7,4 @@ If you would like to test this out on your own, be sure to add these after cloni
   - `ssl.certificateAlias`
   - `ssl.certificatePassword`
 
-To run the container, perform `docker build -t name-of-your-choice ./` and then `docker run -p 8443:8443 name-of-your-choice`.
+To run the container, perform `docker build -t name-of-your-choice ./` and then `docker run -v "/$(pwd)/certs":/certs -p 8443:8443 name-of-your-choice`.
