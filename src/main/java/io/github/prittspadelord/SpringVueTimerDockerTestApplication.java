@@ -70,6 +70,19 @@ public class SpringVueTimerDockerTestApplication {
                 Set.of(MyDispatcherServletInitializer.class)
             );
 
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                try {
+                    log.info("Gracefully shutting down server...");
+                    tomcat.stop();
+                    tomcat.getServer().await();
+                    log.info("Shutdown complete");
+                }
+                catch(LifecycleException e) {
+                    log.error("Error occured during server shutdown", e);
+                    throw new RuntimeException(e);
+                }
+            }));
+
             tomcat.start();
             tomcat.getServer().await();
         }
@@ -78,7 +91,7 @@ public class SpringVueTimerDockerTestApplication {
             throw new RuntimeException(e);
         }
         catch(LifecycleException e) {
-            log.error("Error occured during Tomcat startup", e);
+            log.error("Error occured during server startup", e);
             throw new RuntimeException(e);
         }
     }
